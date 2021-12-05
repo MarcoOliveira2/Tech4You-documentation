@@ -119,7 +119,17 @@
                             <li><a href="#line1">Introdução</a></li>
                             <li><a href="#line2">Descrição do projeto e dos objetivos</a></li>
                             <li><a href="#line3">Especificação da API</a></li>
-                            <li><a href="#line4">Definição dos testes</a></li>
+                            <li><a href="#line4">Definição dos testes</a>
+                                <ul class="nav">
+                                    <li><a href="#line4_1">Testes Contas</a></li>
+                                    <li><a href="#line4_2">Testes Equipamentos</a></li>
+                                    <li><a href="#line4_3">Testes Funcionários</a></li>
+                                    <li><a href="#line4_4">Testes Clientes</a></li>
+                                    <li><a href="#line4_5">Testes Serviços</li>
+
+
+                                </ul>
+                            </li>
 
                         </ul>
                     </nav>
@@ -135,7 +145,7 @@
                                 <div class="row">
 
                                     <div class="col-md-12 full">
-                                        <div class="intro1">
+                                        <div class="intro1 text">
                                             <ul>
                                                 <li><strong>Realizado por: </strong>Marco Oliveira & Miguel Pinto</li>
                                                 <li><strong>Cadeiras : </strong>Desenvolvimento Colaborativo de Software
@@ -154,9 +164,9 @@
                         <hr>
                     </section>
 
-                    <section id="line2">
+                    <section id="line2" class="text">
                         <div>
-                            <h2 class="dark-text">Descrição do projeto e dos objetivos
+                            <h2 class="dark-text ">Descrição do projeto e dos objetivos
                                 <hr>
                             </h2>
 
@@ -228,67 +238,72 @@
                                     <hr>
                                 </h2>
 
-                                <h4>Testes Contas </h4>
+                                <h4 id="line4_1">Testes Contas </h4>
 
 
                                 <pre class="brush: javascript">
 
 
-test('Teste #7 - Inserir contas', () => {
-    return request(app).post(MAIN_ROUTE)
-      .send({ name: 'Account #1', technician_id: technician.id })
-      .then((res) => {
-        expect(res.status).toBe(201);
-        expect(res.body.name).toBe('Account #1');
-      });
-  });
-  
-  test('Test #8 - Listar contas', () => {
-    return app.db('accounts')
-      .insert({ name: 'Account #list', technician_id: technician.id })
-      .then(() => request(app).get(MAIN_ROUTE))
-      .then((res) => {
-        expect(res.status).toBe(200);
-        expect(res.body.length).toBeGreaterThan(0);
-      });
-  });
-  
-  test('Test #9 - Listar conta por ID', () => {
-    return app.db('accounts')
-      .insert({ name: 'Account By id', technician_id: technician.id }, ['id'])
-      .then((acc) => request(app).get(`${MAIN_ROUTE}/${acc[0].id}`))
-      .then((res) => {
-        expect(res.status).toBe(200);
-        expect(res.body.name).toBe('Account By id');
-        expect(res.body.technician_id).toBe(technician.id);
-      });
-  });
-  
-  test('Test #10 - Atualizar conta', () => {
-    return app.db('accounts')
-      .insert({ name: 'Account - Update ', technician_id: technician.id }, ['id'])
-      .then((acc) => request(app).put(`${MAIN_ROUTE}/${acc[0].id}`)
-        .send({ name: 'Account updated' }))
-      .then((res) => {
-        expect(res.status).toBe(200);
-        expect(res.body.name).toBe('Account updated');
-      });
-  });
-  
-  test('Test #11 - Remover conta', () => {
-    return app.db('accounts')
-      .insert({ name: 'Account - Remove', technician_id: technician.id }, ['id'])
-      .then((acc) => request(app).delete(`${MAIN_ROUTE}/${acc[0].id}`)
-        .send({ name: 'Account removed' }))
-      .then((res) => {
-        expect(res.status).toBe(204);
-      });
-  });
+                                        test('Teste #7 - Inserir contas', () => {
+                                            return request(app).post(MAIN_ROUTE)
+                                            .set('authorization', bearer ${technician.token})
+                                            .send({ name: 'Account #1', technician_id: technician.id })
+                                            .then((res) => {
+                                                expect(res.status).toBe(201);
+                                                expect(res.body.name).toBe('Account #1');
+                                            });
+                                        });
+                                        
+                                        test('Test #8 - Listar contas', () => {
+                                            return app.db('accounts')
+                                            .insert({ name: 'Account #list', technician_id: technician.id })
+                                            .then(() => request(app).get(MAIN_ROUTE))
+                                            .set('authorization', bearer ${technician.token})
+                                            .then((res) => {
+                                                expect(res.status).toBe(200);
+                                                expect(res.body.length).toBeGreaterThan(0);
+                                            });
+                                        });
+                                        
+                                        test('Test #9 - Listar conta por ID', () => {
+                                            return app.db('accounts')
+                                            .insert({ name: 'Account By id', technician_id: technician.id }, ['id'])
+                                            .then((acc) => request(app).get(`${MAIN_ROUTE}/${acc[0].id}`))
+                                            .set('authorization', bearer ${technician.token})
+                                            .then((res) => {
+                                                expect(res.status).toBe(200);
+                                                expect(res.body.name).toBe('Account By id');
+                                                expect(res.body.technician_id).toBe(technician.id);
+                                            });
+                                        });
+                                        
+                                        test('Test #10 - Atualizar conta', () => {
+                                            return app.db('accounts')
+                                            .insert({ name: 'Account - Update ', technician_id: technician.id }, ['id'])
+                                            .then((acc) => request(app).put(`${MAIN_ROUTE}/${acc[0].id}`)
+                                                .set('authorization', bearer ${technician.token})
+                                                .send({ name: 'Account updated' }))
+                                            .then((res) => {
+                                                expect(res.status).toBe(200);
+                                                expect(res.body.name).toBe('Account updated');
+                                            });
+                                        });
+                                        
+                                        test('Test #11 - Remover conta', () => {
+                                            return app.db('accounts')
+                                            .insert({ name: 'Account - Remove', technician_id: technician.id }, ['id'])
+                                            .then((acc) => request(app).delete(`${MAIN_ROUTE}/${acc[0].id}`)
+                                                .set('authorization', bearer ${technician.token})
+                                                .send({ name: 'Account removed' }))
+                                            .then((res) => {
+                                                expect(res.status).toBe(204);
+                                            });
+                                        });
                                     
                                 </pre>
 
                                 <br>
-                                <h4>Testes Equipamentos </h4>
+                                <h4 id="line4_2">Testes Equipamentos </h4>
 
 
                                 <pre class="brush: javascript">
@@ -299,7 +314,8 @@ test('Teste #7 - Inserir contas', () => {
                                         }
                                         const serialNumberEquipment = `${getRandomSerialNumber()}`;
                                         return request(app).post(MAIN_ROUTE)
-                                        .send({ typeEquipment: 'Laptop', serialNumber: serialNumberEquipment, brand: 'ACER', accessories: 'Charger', damages: 'Hinge damage', client_id: client.id })
+                                            .set('authorization', bearer ${client.token})
+                                            .send({ typeEquipment: 'Laptop', serialNumber: serialNumberEquipment, brand: 'ACER', accessories: 'Charger', damages: 'Hinge damage', client_id: client.id })
                                         .then((res) => {
                                             expect(res.status).toBe(201);
                                             expect(res.body.typeEquipment).toBe('Laptop');
@@ -314,6 +330,7 @@ test('Teste #7 - Inserir contas', () => {
                                         return app.db('equipments')
                                         .insert({ typeEquipment: 'Other', serialNumber: serialNumberEquipment, brand: 'ACER', accessories: 'Charger', damages: 'Hinge damage', client_id: client.id })
                                         .then(() => request(app).get(MAIN_ROUTE))
+                                            .set('authorization', bearer ${client.token})
                                         .then((res) => {
                                             expect(res.status).toBe(200);
                                             expect(res.body.length).toBeGreaterThan(0);
@@ -328,6 +345,7 @@ test('Teste #7 - Inserir contas', () => {
                                         return app.db('equipments')
                                         .insert({ typeEquipment: 'Laptop', serialNumber: serialNumberEquipment, brand: 'ACER', accessories: 'Charger', damages: 'Hinge damage', client_id: client.id }, ['id'])
                                         .then((equip) => request(app).get(`${MAIN_ROUTE}/${equip[0].id}`))
+                                            .set('authorization', bearer ${client.token})
                                         .then((res) => {
                                             expect(res.status).toBe(200);
                                             expect(res.body.typeEquipment).toBe('Laptop');
@@ -343,6 +361,7 @@ test('Teste #7 - Inserir contas', () => {
                                         return app.db('equipments')
                                         .insert({ typeEquipment: 'Laptop', serialNumber: serialNumberEquipment, brand: 'ACER', accessories: 'Charger', damages: 'Hinge damage', client_id: client.id }, ['id'])
                                         .then((equip) => request(app).put(`${MAIN_ROUTE}/${equip[0].id}`)
+                                            .set('authorization', bearer ${client.token})
                                             .send({ typeEquipment: 'Laptop' }))
                                         .then((res) => {
                                             expect(res.status).toBe(200);
@@ -358,6 +377,7 @@ test('Teste #7 - Inserir contas', () => {
                                         return app.db('equipments')
                                         .insert({ typeEquipment: 'Laptop', serialNumber: serialNumberEquipment, brand: 'ACER', accessories: 'Charger', damages: 'Hinge damage', client_id: client.id }, ['id'])
                                         .then((equip) => request(app).delete(`${MAIN_ROUTE}/${equip[0].id}`)
+                                            .set('authorization', bearer ${client.token})
                                             .send({ typeEquipment: 'Laptop' }))
                                         .then((res) => {
                                             expect(res.status).toBe(204);
@@ -365,6 +385,301 @@ test('Teste #7 - Inserir contas', () => {
                                     });
                                  </pre>
 
+                                <br>
+                                <h4 id="line4_3">Testes Funcionários </h4>
+
+                                <pre class="brush: javascript">
+                                    test('Test #1 - Listar os Técnicos', () => {
+                                        return request(app).get('/technicians')
+                                          .set('authorization', bearer ${technician.token})
+                                          .then((res) => {
+                                            expect(res.status).toBe(200);
+                                            expect(res.body.length).toBeGreaterThan(0);
+                                          });
+                                      });
+                                      
+                                      test('Test #2 - Inserir Técnicos', () => {
+                                        return request(app).post('/technicians')
+                                          .set('authorization', bearer ${technician.token})
+                                          .send({ name: 'Miguel Pinto', address: 'Viatodos', BirhDate: '16-03-2001', password: 'admin', email: mail })
+                                          .then((res) => {
+                                            expect(res.status).toBe(201);
+                                            expect(res.body.name).toBe('Miguel Pinto');
+                                          });
+                                      });
+                                      
+                                      test('Test #3 - Inserir tecnico sem nome', () => {
+                                        return request(app).post('/technicians')
+                                          .set('authorization', bearer ${technician.token})
+                                          .send({ address: 'Viatodos', BirhDate: '16-03-2001', password: 'admin', email: mail })
+                                          .then((res) => {
+                                            expect(res.status).toBe(400);
+                                            expect(res.body.error).toBe('Nome é um atributo obrigatório');
+                                          });
+                                      });
+                                      
+                                      test('Test #4 - Inserir tecnico sem email', async () => {
+                                        const result = await request(app).post('/technicians')
+                                          .set('authorization', bearer ${technician.token})
+                                          .send({ name: 'Miguel Pinto', address: 'Viatodos', BirhDate: '16-03-2001', password: 'admin' });
+                                        expect(result.status).toBe(400);
+                                        expect(result.body.error).toBe('O email é um atributo obrigatório');
+                                      });
+                                      
+                                      test('Test #5 - Inserir técnico sem password', (done) => {
+                                        request(app).post('/technicians')
+                                          .set('authorization', bearer ${technician.token})
+                                          .send({ name: 'Miguel Pinto', address: 'Viatodos', BirhDate: '16-03-2001', email: mail })
+                                          .then((res) => {
+                                            expect(res.status).toBe(400);
+                                            expect(res.body.error).toBe('A palavra-passe é um atributo obrigatório');
+                                            done();
+                                          });
+                                      });
+                                      
+                                      test('Test #6 - Inserir tecnico com email duplicado', () => {
+                                        request(app).post('/technicians')
+                                          .set('authorization', bearer ${technician.token})
+                                          .send({ name: 'Miguel Pinto', address: 'Viatodos', BirhDate: '16-03-2001', password: 'admin', email: mail })
+                                          .then((res) => {
+                                            expect(res.status).toBe(400);
+                                            expect(res.body.error).toBe('Email duplicado na BD');
+                                          });
+                                      });
+                                      
+                                      test('Test #7 - Inserir tecnico sem morada', () => {
+                                        return request(app).post('/technicians')
+                                          .set('authorization', bearer ${technician.token})
+                                          .send({ name: 'Miguel Pinto', BirhDate: '16-03-2001', password: 'admin', email: mail })
+                                          .then((res) => {
+                                            expect(res.status).toBe(400);
+                                            expect(res.body.error).toBe('A morada é um atributo obrigatório');
+                                          });
+                                      });
+                                      
+                                      test('Test #8 - Inserir tecnico sem data de nascimento', () => {
+                                        return request(app).post('/technicians')
+                                          .set('authorization', bearer ${technician.token})
+                                          .send({ name: 'Miguel Pinto', address: 'Viatodos', password: 'admin', email: mail })
+                                          .then((res) => {
+                                            expect(res.status).toBe(400);
+                                            expect(res.body.error).toBe('A data de nascimento é um atributo obrigatório');
+                                          });
+                                      });
+                                      
+                                      test('Test #9 - Listar técnico por ID', () => {
+                                        return app.db('technicians')
+                                             .insert({ CAMPOS DO TECNICO }, ['id'])
+                                             .then((tech) => request(app).get(`${MAIN_ROUTE}/${tech[0].id}`))
+                                             .set('authorization', bearer ${technician.token})
+                                             .then((res) => {
+                                               expect(res.status).toBe(200);
+                                               expect(res.body.name).toBe(NOME DO TECNICO);
+                                             });
+                                      });
+                                      
+                                      test('Test #10 - Atualizar técnico', () => {
+                                         return app.db('technicians')
+                                           .insert({ CAMPOS DO TECNICO }, ['id'])
+                                           .then((tech) => request(app).put(`${MAIN_ROUTE}/${tech[0].id}`)
+                                             .send({ NOME DO TECNICO ATUALIZADO }))
+                                             .set('authorization', bearer ${technician.token})
+                                           .then((res) => {
+                                             expect(res.status).toBe(200);
+                                             expect(res.body.name).toBe(NOME DO TECNICO ATUALIZADO);
+                                           });
+                                      });
+                                      
+                                      test('Test #11 - Remover técnico', () => {
+                                         return app.db('technicians')
+                                           .insert({ CAMPOS DO TECNICO }, ['id'])
+                                           .then((tech) => request(app).delete(`${MAIN_ROUTE}/${tech[0].id}`)
+                                             .send({ NOME DO TECNICO APAGADO }))
+                                             .set('authorization', bearer ${technician.token})
+                                           .then((res) => {
+                                             expect(res.status).toBe(204);
+                                           });
+                                      });
+
+                                </pre>
+
+                                <br>
+                                <h4 id="line4_4">Testes Clientes </h4>
+
+                                <pre class="brush: javascript">
+                                    test('Test #1 - Listar os Clientes', () => {
+                                        return request(app).get('/clients')
+                                          .set('authorization', bearer ${client.token})
+                                          .then((res) => {
+                                            expect(res.status).toBe(200);
+                                            expect(res.body.length).toBeGreaterThan(-1);
+                                          });
+                                      });
+                                      
+                                      test('Test #2 - Inserir Clientes', () => {
+                                        return request(app).post('/clients')
+                                          .set('authorization', bearer ${client.token})
+                                          .send({ name: 'Marco Oliveira', address: 'Pedome', BirhDate: '29-05-2002', phoneNumber: '961548614', email: mailclient, nif: nifclient })
+                                          .then((res) => {
+                                            expect(res.status).toBe(201);
+                                            expect(res.body.name).toBe('Marco Oliveira');
+                                          });
+                                      });
+                                      
+                                      test('Test #3 - Inserir cliente sem nome', () => {
+                                        return request(app).post('/clients')
+                                          .set('authorization', bearer ${client.token})
+                                          .send({ address: 'Pedome', BirhDate: '29-05-2002', phoneNumber: '961548614', email: mailclient, nif: nifclient })
+                                          .then((res) => {
+                                            expect(res.status).toBe(400);
+                                            expect(res.body.error).toBe('Nome é um atributo obrigatório');
+                                          });
+                                      });
+                                      
+                                      test('Test #4 - Inserir cliente sem email', async () => {
+                                        const result = await request(app).post('/clients')
+                                          .set('authorization', bearer ${client.token})
+                                          .send({ name: 'Marco Oliveira', address: 'Pedome', BirhDate: '29-05-2002', phoneNumber: '961548614', nif: nifclient });
+                                        expect(result.status).toBe(400);
+                                        expect(result.body.error).toBe('O email é um atributo obrigatório');
+                                      });
+                                      
+                                      test('Test #5 - Inserir cliente sem morada', () => {
+                                        return request(app).post('/clients')
+                                          .set('authorization', bearer ${client.token})
+                                          .send({ name: 'Marco Oliveira', BirhDate: '29-05-2002', phoneNumber: '961548614', email: mailclient, nif: nifclient })
+                                          .then((res) => {
+                                            expect(res.status).toBe(400);
+                                            expect(res.body.error).toBe('A morada é um atributo obrigatório');
+                                          });
+                                      });
+                                      
+                                      test('Test #6 - Inserir cliente sem data de nascimento', () => {
+                                        return request(app).post('/clients')
+                                          .set('authorization', bearer ${client.token})
+                                          .send({ name: 'Marco Oliveira', address: 'Pedome', phoneNumber: '961548614', email: mailclient, nif: nifclient })
+                                          .then((res) => {
+                                            expect(res.status).toBe(400);
+                                            expect(res.body.error).toBe('A data de nascimento é um atributo obrigatório');
+                                          });
+                                      });
+                                      
+                                      test('Test #7 - Inserir cliente sem numero de telemovel', () => {
+                                        return request(app).post('/clients')
+                                          .set('authorization', bearer ${client.token})
+                                          .send({ name: 'Marco Oliveira', address: 'Pedome', BirhDate: '29-05-2002', email: mailclient, nif: nifclient })
+                                          .then((res) => {
+                                            expect(res.status).toBe(400);
+                                            expect(res.body.error).toBe('O numero de telémovel é um atributo obrigatório');
+                                          });
+                                      });
+                                      
+                                      test('Test #8 - Inserir cliente sem nif', async () => {
+                                        const result = await request(app).post('/clients') 
+                                          .set('authorization', bearer ${client.token})
+                                          .send({ name: 'Marco Oliveira', address: 'Pedome', BirhDate: '29-05-2002', phoneNumber: '961548614', email: mailclient });
+                                        expect(result.status).toBe(400);
+                                        expect(result.body.error).toBe('O NIF é um atributo obrigatório');
+                                      });
+                                      
+                                      
+                                      test('Test #9 - Listar Cliente por ID', () => {
+                                        return app.db('clients')
+                                          .insert({ CAMPOS DO CLIENTE }, ['id'])
+                                          .then((cli) => request(app).get(`${MAIN_ROUTE}/${cli[0].id}`))
+                                          .set('authorization', bearer ${client.token})
+                                          .then((res) => {
+                                            expect(res.status).toBe(200);
+                                            expect(res.body.name).toBe(NOME DO CLIENTE);
+                                          });
+                                      });
+                                      
+                                      test('Test #10 - Atualizar Cliente', () => {
+                                        return app.db('clients')
+                                          .insert({ CAMPOS DO CLIENTE }, ['id'])
+                                          .then((cli) => request(app).put(`${MAIN_ROUTE}/${cli[0].id}`)
+                                            .set('authorization', bearer ${client.token})
+                                            .send({ NOME DO CLIENTE ATUALIZADO }))
+                                          .then((res) => {
+                                            expect(res.status).toBe(200);
+                                            expect(res.body.name).toBe(NOME DO CLIENTE ATUALIZADO);
+                                          });
+                                      });
+                                      
+                                      test('Test #11 - Remover Cliente', () => {
+                                        return app.db('clients')
+                                          .insert({ CAMPOS DO CLIENTE }, ['id'])
+                                          .then((cli) => request(app).delete(`${MAIN_ROUTE}/${cli[0].id}`)
+                                            .set('authorization', bearer ${client.token})
+                                            .send({ NOME DO CLIENTE APAGADO }))
+                                          .then((res) => {
+                                            expect(res.status).toBe(204);
+                                          });
+                                      });
+                                
+                                </pre>
+
+                                <br>
+                                <h4 id="line4_5">Testes Serviços </h4>
+
+                                <pre class="brush: javascript">
+                                    test('Teste #1 - Inserir serviço', () => {
+                                        return request(app).post(MAIN_ROUTE)
+                                          .set('authorization', `bearer ${technician.token}`)
+                                          .send({ CAMPOS DO SERVIÇO, technician_id: technician.id, equipment_id: equipment.id })
+                                          .then((res) => {
+                                            expect(res.status).toBe(201);
+                                            expect(res.body.name).toBe(CAMPOS DO SERVIÇO);
+                                          });
+                                      });
+                                      
+                                      test('Test #2 - Listar serviços', () => {
+                                        return app.db('services')
+                                          .insert({ CAMPOS DO SERVIÇO, technician_id: technician.id, equipment_id: equipment.id })
+                                          .then(() => request(app).get(MAIN_ROUTE))
+                                          .set('authorization', `bearer ${technician.token}`)
+                                          .then((res) => {
+                                            expect(res.status).toBe(200);
+                                            expect(res.body.length).toBeGreaterThan(0);
+                                          });
+                                      });
+                                      
+                                      test('Test #3 - Listar serviços por ID', () => {
+                                        return app.db('services')
+                                          .insert({ CAMPOS DO SERVIÇO, technician_id: technician.id, equipment_id: equipment.id }, ['id'])
+                                          .then((serv) => request(app).get(`${MAIN_ROUTE}/${serv[0].id}`))
+                                          .set('authorization', `bearer ${technician.token}`)
+                                          .then((res) => {
+                                            expect(res.status).toBe(200);
+                                            expect(res.body.name).toBe(CAMPOS DO SERVIÇO);
+                                            expect(res.body.technician_id).toBe(technician.id);
+                                          });
+                                      });
+                                      
+                                      test('Test #4 - Atualizar serviços', () => {
+                                        return app.db('services')
+                                          .insert({ CAMPOS DO SERVIÇO, technician_id: technician.id, equipment_id: equipment.id }, ['id'])
+                                          .then((serv) => request(app).put(`${MAIN_ROUTE}/${serv[0].id}`)
+                                            .set('authorization', `bearer ${technician.token}`)
+                                            .send({ CAMPOS DO SERVIÇO }))
+                                          .then((res) => {
+                                            expect(res.status).toBe(200);
+                                            expect(res.body.name).toBe(CAMPOS DO SERVIÇO);
+                                          });
+                                      });
+                                      
+                                      test('Test #5 - Remover serviços', () => {
+                                        return app.db('services')
+                                          .insert({ CAMPOS DO SERVIÇO, technician_id: technician.id, equipment_id: equipment.id }, ['id'])
+                                          .then((acc) => request(app).delete(`${MAIN_ROUTE}/${acc[0].id}`)
+                                            .set('authorization', `bearer ${technician.token}`)
+                                            .send({ CAMPOS DO SERVIÇO }))
+                                          .then((res) => {
+                                            expect(res.status).toBe(204);
+                                          });
+                                      });
+
+                                </pre>
                             </div>
                         </div>
 
